@@ -1,0 +1,181 @@
+===============================   ===============================
+FFM type name                     Common API type name
+===============================   ===============================
+FFM-Antenna                       Antenna
+FFM-Antenna_Type                  Antenna_Type
+FFM-IP_Network                    IP_Network
+FFM-IP4_Network                   IP4_Network
+FFM-IP6_Network                   IP6_Network
+FFM-Net_Device                    Net_Device
+FFM-Net_Interface                 Net_Interface
+FFM-Node                          Node
+FFM-Wired_Interface               Wired_Interface
+FFM-Wireless_Channel              Wireless_Channel
+FFM-Wireless_Interface            Wireless_Interface
+===============================   ===============================
+
+===============   ==========================  ==========================
+Attribute type    Raw value json              Cooked value json
+===============   ==========================  ==========================
+Boolean           "yes"                       true
+                  "no"                        false
+Date              "2014-02-26"                "2014-02-26"
+Datetime          "2014-02-26 15:08"          "2014-02-26T15:08+01:00"
+Frequency         "2.5 Ghz"                   2.5e9
+IP4 address       "1.2.3.40/28"               "1.2.3.40/28"
+IP6 address       "::1"                       "::1"
+String            "Don's network"             "Don's network"
+String no-case    "McDonalds"                  "mcdonalds"
+TX-Power          "20 dBm"                     100
+                  "100 mW"                     100
+===============   ==========================  ==========================
+
+
+AWMN object model
+--------------------
+
+http://interop.wlan-si.net/wiki/NodesDatabase/Schema/AWMN
+
+Common attributes
+===================
+
+* id
+* date_in [creation]
+* info [text]
+
+Area
+=====
+
+* ip_end
+* ip_start
+* name
+* region
+
+IP_Address
+===========
+
+* always_on [bool]
+* hostname
+* ip
+* mac
+* node
+* type [camera|other|pc|router|server|voip|wireless-bridge]
+
+Link
+=====
+
+* channel
+* equipment [text]
+* node
+* peer_node
+* protocol [IEEE 802.11a|IEEE 802.11b|IEEE 802.11g|IEEE 802.11n|IEEE 802.3ab (Gigabit Ethernet)|IEEE 802.3i (Ethernet)|IEEE 802.3u (Fast Ethernet)|other]
+* ssid
+* status [active|inactive]
+* type [ap|client|p2p]
+
+Node
+=====
+
+* area
+* elevation
+* latitude
+* longitude
+* name
+* name_ns  ???
+
+Region
+=========
+
+* ip_end
+* ip_start
+* name
+
+Guifi object model
+--------------------
+
+http://interop.wlan-si.net/wiki/NodesDatabase/Schema/GuifiNet
+
+Attributes counting related objects are ignored below.
+
+Common attributes
+===================
+
+* id
+* created
+* updated
+
+Device
+========
+
+* firmware [string]
+* graph_server ???
+* name [name of device type]
+* NODE
+* snmp_index ??? [2|3|4|5|9|v] ???
+* status [Building|Dropped|Planned|Reserved|Testing|Working]
+* title
+* type ??? [ADSL|cam|generic|nat|phone|radio|server]
+
+Interface
+==========
+
+* DEVICE
+* ipv4 [ipv4 address]
+* mac ??? [garbage prone]
+* mask
+* RADIO [optional]
+* type [lan|wan|wlan/lan|wds/p2p]
+
+Link
+======
+
+* INTERFACE
+* linked_interface [broken]
+* link_status [Building|Planned|Reserved|Testing|Working] !!! status
+* link_type [ap/client|cable|wds] ??? should be implied by link between interfaces
+
+Node
+=====
+
+* antenna_elevation
+* graph_server ???
+* lat
+* lon
+* status [Building|Planned|Reserved|Testing|Working]
+* title
+* ZONE
+
+Radio
+======
+
+* antenna_angle ??? [120|30|360|6|60|90]
+* antenna_azimuth
+* antenna_gain
+* channel
+* DEVICE
+* mode [ap|client]
+* protocol [802.11a|802.11b|802.11g|legacy]
+* snmp_index ??? ???
+* snmp_name
+* ssid
+
+Service
+========
+
+* DEVICE
+* status [Building|Planned|Testing|Working]
+* title
+* type
+
+Zone
+=====
+
+* box [rectangle of lat/lon, lat/lon ???]
+* dns_servers [string containing IP addresses ???]
+* graph_server ???
+* ntp_servers [string containing IP addresses ???]
+* parent [zone]
+* time_zone
+* title
+
+.. ### END common-api.txt
