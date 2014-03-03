@@ -178,4 +178,183 @@ Zone
 * time_zone
 * title
 
+Ninux Nodeshot object model
+----------------------------
+
+Antenna
+=========
+
+* antenna_model [foreign-key]
+* azimuth [float]
+* device [foreign-key]
+* inclination [float]
+* polarization [circular:3|dual_linear:5|horizonal:1|linear:4|vertical:2]
+* radio  [foreign-key]
+
+AntennaModel
+=============
+
+* beamwidth [decimal horizontal/vertical [degrees]]
+* datasheet [url]
+* device_model [foreign-key]
+* frequency [integer-interval [MHz]]
+* gain [decimal]
+* image [url]
+* manufacturer [foreign-key]
+* name [string]
+* polarization [circular:3|dual_linear:5|horizonal:1|linear:4|vertical:2]
+
+Bridge (Interface)
+===================
+
+* interfaces [many-to-many]
+
+Device
+========
+
+* description [string]
+* elev [float]
+* name [string]
+* location [point]
+* node [foreign-key]
+* notes [string]
+* status [integer] [inactive:3|not_reachable:0|reachable:1|unknown:2]
+* type [string] [other:other|radio device:radio|router:router|sensor:sensor|server:server|switch managed:switch]
+
+DeviceConnector
+================
+
+* config [dictionary] ???
+* device [foreign-key]
+* host [string]
+* node [foreign-key]
+* port [integer]
+
+DeviceModel
+============
+
+* cpu [string]
+* datasheet [url]
+* image [url]
+* manufacturer [foreign-key]
+* name [string]
+* ram [integer [bytes]]
+
+DeviceToModelRel
+=================
+
+* cpu [string]
+* device [foreign-key]
+* device_model [foreign-key]
+* ram [integer [bytes]]
+
+Ethernet (Interface)
+=====================
+
+* duplex [full|half]
+* standard [string] [basefx:100/1000 BaseFX (Fiber)|fast:10/100 Fast Ethernet|gigabit:10/100/1000 Gigabit Ethernet|legacy:Legacy Ethernet]
+
+Interface
+==========
+
+* device [foreign-key]
+* mac [mac-address]
+* mtu [integer]
+* name [string]
+* rx_rate [integer]
+* tx_rate [integer]
+* type [integer] [bridge:3|ethernet:1|loopback:0|tunnel:5|virtual:4|vlan:6|wireless:2]
+
+Ip
+====
+
+* address [ip-address]
+* interface [foreign-key]
+* netmask [ip-network]
+* protocol [string] [ip4|ip6]
+
+Link
+=====
+
+* interface_a [foreign-key] except for planned links
+* interface_b [foreign-key] except for planned links
+* line [geometry]
+* node_a [foreign-key] for planned links
+* node_b [foreign-key] for planned links
+* status [integer] [active:2|archived:-3|disconnected:-2|down:-1|planned:0|testing:1]
+* type [integer] [ethernet:2|fiber:3|other_wired:4|radio:1|virtual:5]
+
+MacPrefix
+===========
+
+* manufacturer [foreign-key]
+* prefix [string]
+
+Manufacturer
+=============
+
+* image [url]
+* name [string]
+* url  [url]
+
+Node
+=====
+
+* address
+* description
+* elev [float]
+* geometry ???
+* is_published ???
+* layer [foreign-key] ???
+* name
+* slug ???
+* status [foreign-key]
+* user [foreign-key]
+
+RadiationPattern
+==================
+
+* antenna_model  [foreign-key]
+* image [url]
+* type [string]
+
+Node_Status
+=============
+
+* description [string]
+* name [string]
+* slug [string] ???
+
+Tunnel (Interface)
+===================
+
+* endpoint [ip-address]
+* protocol [string]
+* sap [string]
+
+Vap [virtual wireless interface]
+===================================
+
+* bssid [string]
+* encryption [string]
+* essid [string]
+* interface [foreign-key]
+* key [string]
+
+
+Vlan (Interface)
+================
+
+* tag [string]
+
+Wireless (Interface)
+=======================
+
+* channel [string]
+* channel_width [string] ???
+* dbm [integer]
+* mode [adhoc:adhoc|ap:access point|mesh:mesh|monitor:monitor|sta:station]
+* output_power [integer]
+* standard [802.11a|802.11ac|802.11ad|802.11b|802.11g|802.11n|802.11s]
+
 .. ### END common-api.txt
