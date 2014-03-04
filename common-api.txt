@@ -41,54 +41,54 @@ Common attributes
 
 * id
 * date_in [creation]
-* info [text]
+* info    [text]
 
 Area
 =====
 
-* ip_end
-* ip_start
-* name
-* region
+* ip_end    [integer]
+* ip_start  [integer]
+* name      [string]
+* region    [foreign-key]
 
 IP_Address
 ===========
 
 * always_on [bool]
-* hostname
-* ip
-* mac
-* node
-* type [camera|other|pc|router|server|voip|wireless-bridge]
+* hostname  [string]
+* ip        [integer]
+* mac       [string]
+* node      [foreign-key]
+* type      [camera|other|pc|router|server|voip|wireless-bridge]
 
 Link
 =====
 
-* channel
+* channel   [string]
 * equipment [text]
-* node
-* peer_node
-* protocol [IEEE 802.11a|IEEE 802.11b|IEEE 802.11g|IEEE 802.11n|IEEE 802.3ab (Gigabit Ethernet)|IEEE 802.3i (Ethernet)|IEEE 802.3u (Fast Ethernet)|other]
-* ssid
-* status [active|inactive]
-* type [ap|client|p2p]
+* node      [foreign-key]
+* peer_node [foreign-key]
+* protocol  [IEEE 802.11a|IEEE 802.11b|IEEE 802.11g|IEEE 802.11n|IEEE 802.3ab (Gigabit Ethernet)|IEEE 802.3i (Ethernet)|IEEE 802.3u (Fast Ethernet)|other]
+* ssid      [string]
+* status    [active|inactive]
+* type      [ap|client|p2p]
 
 Node
 =====
 
-* area
-* elevation
-* latitude
-* longitude
-* name
+* area       [foreign-key]
+* elevation  [integer]
+* latitude   [float]
+* longitude  [float]
+* name       [string]
 * name_ns  ???
 
 Region
 =========
 
-* ip_end
-* ip_start
-* name
+* ip_end     [integer]
+* ip_start   [integer]
+* name       [string]
 
 Guifi object model
 --------------------
