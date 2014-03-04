@@ -1,0 +1,270 @@
+========================================================================
+A common RESTful API for node databases of wireless community networks
+========================================================================
+
+Types
+---------------
+
+* Antenna
+
+* Antenna_Band
+
+* Antenna_Type
+
+* Net_Device
+
+* Net_Device_Type
+
+* Net_Interface
+
+* Net_Link
+
+* Node
+
+* Wired_Interface
+
+* Wireless_Channel
+
+* Wireless_Interface
+
+* Wireless_Interface_uses_Antenna
+
+* Wireless_Interface_uses_Wireless_Channel
+
+Custom attribute types
+-------------------------
+
+Freq_Interval
+==============
+
+Tuple of float values (lower, upper) in units of Hertz.
+
+Geo_Position
+==============
+
+An sub-object with the attributes:
+
+===============   ===============  ===============   ===========================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ===========================
+altitude          Float            optional          meters above mean sea level
+latitude          Float            required          degrees
+longitude         Float            required          degrees
+===============   ===============  ===============   ===========================
+
+Remark: `position` is modelled as a composite attribute because it is
+optional, but `latitude` and `longitude` both need to be specified if
+one of them is given; `altitude` can only be specified together with
+`latitude` and `longitude`, but can also be skipped.
+
+Polarization
+==============
+
+One of: ("horizontal", "vertical", "left circular", "right circular")
+
+Wireless_Mode
+================
+
+One of: ("AP", "Ad-Hoc", "Client")
+
+Wireless_Std
+================
+
+One of : ("802.11a", "802.11b", "802.11g", "802.11n")
+
+Attributes
+-------------
+
+Antenna
+========
+
+===============   ===============  ===============   ======================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ======================
+azimuth           Angle [Float]    required          degrees, (0, 360)
+desc              String           optional
+elevation_angle   Angle [Float]    optional          degrees, (-90, +90)
+gain              Float            optional
+name              String           optional
+polarization      Polarization     optional
+type              Antenna_Type     required          foreign-key
+===============   ===============  ===============   ======================
+
+Antenna_Band
+=============
+
+===============   ===============  ===============   ======================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ======================
+band              Freq_Interval    required          (Hertz, Hertz)
+type              Antenna_Type     required          foreign-key
+===============   ===============  ===============   ======================
+
+
+Antenna_Type
+===============
+
+===============   ===============  ===============   ======================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ======================
+desc              String           optional
+gain              Float            required          dBi
+model_no          String           optional
+name              String           required
+polarization      Polarization     required
+revision          String           optional
+===============   ===============  ===============   ======================
+
+Todo: add information about radiation pattern in a computationally
+useful format.
+
+Net_Device
+============
+
+===============   ===============  ===============   ======================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ======================
+desc              String           optional
+name              String           optional
+node              Node             required          foreign-key
+type              Net_Device_Type  required          foreign-key
+===============   ===============  ===============   ======================
+
+Question:
+
+* location info: Ninux has it, AWMN, Funkfeuer and Guifi keep
+  it with the Node.
+
+Net_Device_Type
+================
+
+===============   ===============  ===============   ======================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ======================
+desc              String           optional
+model_no          String           optional
+name              String           required
+revision          String           optional
+===============   ===============  ===============   ======================
+
+Net_Interface
+===============
+
+===============   ===============  ===============   ======================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ======================
+desc              String           optional
+device            Net_Device       required          foreign-key
+mac_address       Mac_Address      optional
+name              String           optional
+===============   ===============  ===============   ======================
+
+Net_Link
+==========
+
+===============   ===============  ===============   ======================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ======================
+left              Net_Interface    required          foreign-key
+right             Net_Interface    required          foreign-key
+===============   ===============  ===============   ======================
+
+Question: Ninux has an additional Planned_Link (node-node), AWMN doesn't
+model devices and interfaces and has links as node-to--node.
+
+Node
+=======
+
+===============   ===============  ===============   ======================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ======================
+address           String           optional
+desc              String           optional
+name              String           required
+position          Geo_Position     optional
+===============   ===============  ===============   ======================
+
+Wired_Interface
+==================
+
+===============   ===============  ===============   ======================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ======================
+desc              String           optional
+device            Net_Device       required          foreign-key
+mac_address       Mac_Address      optional
+name              String           optional
+is_active         Boolean          optional
+===============   ===============  ===============   ======================
+
+Wireless_Channel
+===================
+
+===============   ===============  ===============   ======================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ======================
+number            Integer          required
+frequency         Frequency        required          Hertz
+===============   ===============  ===============   ======================
+
+Wireless_Interface
+=====================
+
+===============   ===============  ===============   ======================
+Name              Type             Kind              Unit
+===============   ===============  ===============   ======================
+desc              String           optional
+device            Net_Device       required          foreign-key
+mac_address       Mac_Address      optional
+name              String           optional
+is_active         Boolean          optional
+mode              Wireless_Mode    optional
+essid             String           optional          max_length = 32
+bssid             MAC_Address      optional
+standard          Wireless_Std     required
+tx_power          TX-Power         optional          milliWatt
+===============   ===============  ===============   ======================
+
+Wireless_Interface_uses_Antenna
+=================================
+
+===============   =====================  ===============   ======================
+Name              Type                   Kind              Unit
+===============   =====================  ===============   ======================
+interface         Wireless_Interface     required          foreign-key
+antenna           Antenna                required          foreign-key
+relative_height   Float                  optional          meters
+===============   =====================  ===============   ======================
+
+Todo: move `relative_height` to Antenna ???
+
+Wireless_Interface_uses_Wireless_Channel
+==========================================
+
+===============   =====================  ===============   ======================
+Name              Type                   Kind              Unit
+===============   =====================  ==============    ======================
+interface         Wireless_Interface     required          foreign-key
+channel           Wireless_Channel       required          foreign-key
+===============   =====================  ===============   ======================
+
+
+Attribute representation in JSON
+---------------------------------
+
+===============   ==========================  ==========================
+Attribute type    Raw value json              Cooked value json
+===============   ==========================  ==========================
+Boolean           "yes"                       true
+                  "no"                        false
+Date              "2014-02-26"                "2014-02-26"
+Datetime          "2014-02-26 15:08"          "2014-02-26T15:08+01:00"
+Frequency         "2.5 Ghz"                   2.5e9
+IP4 address       "1.2.3.40/28"               "1.2.3.40/28"
+IP6 address       "::1"                       "::1"
+Polarization      "horizontal"                "horizontal"
+String            "Don's network"             "Don's network"
+String no-case    "McDonalds"                  "mcdonalds"
+TX-Power          "20 dBm"                     100
+                  "100 mW"                     100
+===============   ==========================  ==========================
