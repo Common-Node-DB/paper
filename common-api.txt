@@ -263,8 +263,86 @@ Frequency         "2.5 Ghz"                   2.5e9
 IP4 address       "1.2.3.40/28"               "1.2.3.40/28"
 IP6 address       "::1"                       "::1"
 Polarization      "horizontal"                "horizontal"
+Reference         {"pid": pid, "url": url}    {"pid": pid, "url": url}
 String            "Don's network"             "Don's network"
 String no-case    "McDonalds"                  "mcdonalds"
 TX-Power          "20 dBm"                     100
                   "100 mW"                     100
 ===============   ==========================  ==========================
+
+Common-API URL scheme
+----------------------
+
+All resources support the method `OPTIONS` which returns the list of methods
+supported by that resource.
+
+- /CAPI/: root URL of common-api (name depends on community network)
+
+  * Supported methods:
+
+    + GET: returns list of urls of supported types
+
+- /CAPI/<Type>: REST resource for `<Type>`
+
+  * Supported methods:
+
+    + GET: returns list of instances of `<Type>`
+
+    + OPTIONS: returns the list of methods supported by that resource and
+      documentation (in JSON) about `<Type>`.
+
+    + POST: create new instance of `<Type>`
+
+- /CAPI/<Type>/<pid>: REST resource for one specific instance of `<Type>`
+
+  * Supported methods:
+
+    + DELETE: delete the instance
+
+    + GET: returns attributes of, and meta information about, the instance
+
+    + PATCH: change values of specified attributes
+
+JSON representation of GET responses
+-------------------------------------
+
+- /CAPI/: object with the attributes
+
+  * entries: list of urls of supported types
+
+- /CAPI/<Type>: object with the attributes
+
+  * attribute_names: list of names of (editable) attributes of `<Type>`
+
+  * entries: list of instances matching the query arguments
+
+- /CAPI/<Type>/<pid>: JSON representation of instance `<pid>` of `<Type>`
+
+  object with the attributes:
+
+  * attributes: JSON object containing name and cooked value for each
+    non-null attribute requested (value can be nested)
+
+    + This is not returned if the request contains the query
+      argument `raw` unless it also contains the query arguments `ckd`
+
+  * attributes_raw: JSON object containing name and raw value for each
+    non-null attribute requested (value can be nested)
+
+    + This is only returned if the request contains the query argument `raw`
+
+  * cid: change id of instance at time of request
+
+    + This must be passed to a subsequent `PATCH` request and is used to
+      avoid update conflicts
+
+    + A timestamp can be used if the resolution is fine enough (at least 1
+      second). TBD: RSC
+
+  * pid: permanent id of instance
+
+  * type_name: name of `<Type>` to which the instance belongs
+
+  * url: url of resource describing the instance
+
+  * TBD...
