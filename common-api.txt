@@ -301,6 +301,9 @@ supported by that resource.
 
     + GET: returns attributes of, and meta information about, the instance
 
+    + OPTIONS: returns the list of methods supported by that resource and
+      documentation (in JSON) about `<Type>`.
+
     + PATCH: change values of specified attributes
 
 JSON representation of GET responses
@@ -341,8 +344,59 @@ JSON representation of GET responses
 
   * pid: permanent id of instance
 
-  * type_name: name of `<Type>` to which the instance belongs
-
   * url: url of resource describing the instance
 
-  * TBD...
+  * a common-api server may include more fields in the response
+
+JSON representation of OPTIONS responses for documentation
+------------------------------------------------------------
+
+The `OPTIONS` methods of `/CAPI/<Type>` and `/CAPI/<Type>/<pid>` return
+documentation about the respective types in the JSON format:
+
+- attributes: JSON object containing documentation about the `editable` and
+  `queryable` attributes of the type.
+
+  `editable` and `queryable` are JSON lists of the respective attributes as
+  JSON objects with the fields:
+
+  * default_value: the default value of the attribute, if any
+
+  * description: short description of the attribute (usable for end-user
+    documentation, e.g., for display as help text)
+
+  * is_required: true for attributes where a value **must** be defined
+
+  * kind: primary|required|optional TBD
+
+  * max_length: maximum length (string attributes only)
+
+  * max_value: maximum allowed value, if any
+
+  * min_value: minimum allowed value, if any
+
+  * name: name of the attribute
+
+  * representation: canonical representation of attribute value, e.g., int,
+    node, unicode, or datetime
+
+  * syntax: a description of the syntax accepted for raw values, if applicable
+
+  * type: semantic type of attribute value, e.g., frequency, reference,
+    datetime, email
+
+  * for references::
+
+    + type_name: name of type the reference refers to
+
+- children ???
+
+- cross_references ???
+
+- description: short description of the type
+
+- is_partial ???
+
+- parents ???
+
+..
