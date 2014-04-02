@@ -389,14 +389,18 @@ documentation about the respective types in the JSON format:
 
     + type_name: name of type the reference refers to
 
-- children ???
-
-- cross_references ???
-
 - description: short description of the type
 
-- is_partial ???
+- type_name: name of the type
 
-- parents ???
+JSON representation of PATCH responses
+---------------------------------------
+
+TBD
+
+JSON representation of POST responses
+--------------------------------------
+
+TBD
 
 ..
